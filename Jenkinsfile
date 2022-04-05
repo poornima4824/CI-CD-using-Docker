@@ -70,29 +70,29 @@ pipeline {
          {
              script
              {
-                sh "whoami && pwd && /usr/local/bin/aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                sh "/usr/local/bin/aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
              }
          }
      }
-     stage('Building Docker Image')
-     {
-         steps
-         {
-             script
-             {
-              sh "docker build . -t ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
-             }
-         }
-     }
-     stage('Pushing Docker image into ECR')
-     {
-         steps
-         {
-            script
-            {
-                sh "docker push ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
-            }
-         }
+    //  stage('Building Docker Image')
+    //  {
+    //      steps
+    //      {
+    //          script
+    //          {
+    //           sh "docker build . -t ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
+    //          }
+    //      }
+    //  }
+    //  stage('Pushing Docker image into ECR')
+    //  {
+    //      steps
+    //      {
+    //         script
+    //         {
+    //             sh "docker push ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
+    //         }
+    //      }
 
      }
   }
