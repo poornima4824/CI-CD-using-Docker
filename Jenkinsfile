@@ -41,7 +41,7 @@ pipeline {
            [
              artifactId: 'LoginWebApp', 
              classifier: '', 
-             file: 'target/LoginWebApp Maven Webapp-1.0.0.war', 
+             file: 'target/LoginWebApp-1.war', 
              type: 'war'
              ]
           ], 
