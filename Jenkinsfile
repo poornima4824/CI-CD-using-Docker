@@ -74,26 +74,27 @@ pipeline {
              }
          }
      }
-    //  stage('Building Docker Image')
-    //  {
-    //      steps
-    //      {
-    //          script
-    //          {
-    //           sh "docker build . -t ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
-    //          }
-    //      }
-    //  }
-    //  stage('Pushing Docker image into ECR')
-    //  {
-    //      steps
-    //      {
-    //         script
-    //         {
-    //             sh "docker push ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
-    //         }
-    //      }
+      stage('Building Docker Image')
+      {
+          steps
+          {
+              script
+              {
+               sh "docker build . -t ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
+              }
+          }
+      }
+      stage('Pushing Docker image into ECR')
+      {
+          steps
+          {
+             script
+             {
+                 sh "docker push ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
+             }
+          }
 
-    // }
+     }
   }
 }
+   
