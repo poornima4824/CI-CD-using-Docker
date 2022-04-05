@@ -18,7 +18,13 @@ pipeline {
              
                 sh 'mvn package'             
           }
-        }	
-      }
-} 
-    
+	 }
+          stage("build & SonarQube analysis") {
+            steps {
+              withSonarQubeEnv('docker-java') {
+                sh 'mvn clean package sonar:sonar'
+              }
+            }
+          }
+ }
+}
