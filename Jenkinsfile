@@ -19,12 +19,21 @@ pipeline {
                 sh 'mvn package'             
           }
 	 }
-      stage('build && SonarQube analysis') {
-          steps {
-               withSonarQubeEnv('SonarQube') {
-              sh 'mvn -Psonar -Dsonar.sourceEncoding=UTF-8 org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar'
-      }
- }
+      stage('Sonarqube'){
+        steps {
+          withSonarQubeEnv('sonar')
+          {
+            sh "mvn sonar:sonar"
+          }
         }
+      }
+         stage("Quality gate check"){
+           steps {
+             timeout(time: 1, unit: 'HOURS')
+             {
+               waitForQualityGate abortpipeline: true
+             }
+           }
+         }
  }
 }
