@@ -1,7 +1,12 @@
 pipeline {
-  environment {     
-    DOCKERHUB_CREDENTIALS= credentials('dockerhubcredentials')     
-  }    
+   environment
+ {
+     AWS_ACCOUNT_ID="440883647063"             
+     AWS_DEFAULT_REGION="us-east-1" 
+     IMAGE_REPO_NAME="sample_login_app"
+     REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+     
+ } 
     agent any
 	
 	  tools
@@ -23,22 +28,22 @@ pipeline {
           }
 	 }
        
-        stage('Execute Sonarqube Report') {
-        steps {
-           withSonarQubeEnv('sonar')
-           {
-             sh "mvn sonar:sonar"
-           }
-          }
-      }
-      stage('Quality Gate Check') {
-        steps {
-           timeout(time: 1, unit: 'HOURS') 
-           {    
-              waitForQualityGate abortPipeline: true
-      }
-    }
-     }
+    //     stage('Execute Sonarqube Report') {
+    //     steps {
+    //        withSonarQubeEnv('sonar')
+    //        {
+    //          sh "mvn sonar:sonar"
+    //        }
+    //       }
+    //   }
+    //   stage('Quality Gate Check') {
+    //     steps {
+    //        timeout(time: 1, unit: 'HOURS') 
+    //        {    
+    //           waitForQualityGate abortPipeline: true
+    //   }
+    // }
+    //  }
 
        stage('Nexus artifact upload') {
          steps {
@@ -59,23 +64,36 @@ pipeline {
              version: '1.0.0'
          }
        }
-        stage('Build Docker Image') {         
-      steps{                
-	         sh 'sudo -S docker build -t nagapoornima/sample_login_app:$BUILD_NUMBER .'           
-           echo 'Build Image Completed'                
-      }           
-    }
-    stage('Login to Docker Hub') {         
-      steps{                            
-	          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                 
-	          echo 'Login Completed'                
-      }           
-    }               
-    stage('Push Image to Docker Hub') {         
-      steps{                            
-	        sh 'sudo docker push nagapoornima/sample_login_app:$BUILD_NUMBER'                 
-          echo 'Push Image Completed'       
-      }           
-    }      
- }
+        stage('Login to AWS ECR')
+     {
+         steps
+         {
+             script
+             {
+                sh "whoami && pwd && /usr/local/bin/aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+             }
+         }
+     }
+     stage('Building Docker Image')
+     {
+         steps
+         {
+             script
+             {
+              sh "docker build . -t ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
+             }
+         }
+     }
+     stage('Pushing Docker image into ECR')
+     {
+         steps
+         {
+            script
+            {
+                sh "docker push ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
+            }
+         }
+
+     }
+  }
 }
