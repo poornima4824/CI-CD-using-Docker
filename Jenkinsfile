@@ -1,4 +1,9 @@
 pipeline {
+  environment {
+         registry = "https://hub.docker.com/sample_login_app"
+         registryCredential = 'nagapoornima'
+         dockerImage = ''
+        }
     agent any
 	
 	  tools
@@ -57,8 +62,8 @@ pipeline {
         stage('Docker Build and Tag') {
            steps {
               
-                sh 'docker build -t nagapoornima/sampleloginapp .' 
-               // sh 'docker tag samplewebapp poornima/samplewebapp:latest'
+                sh 'docker build -t nagapoornima/sample_login_app .' 
+               sh 'docker tag samplewebapp nagapoornima/sample_login_app:latest'
                 //sh 'docker tag samplewebapp nikhilnidhi/samplewebapp:$BUILD_NUMBER'
               
           }
@@ -67,8 +72,8 @@ pipeline {
         stage('Publish image to Docker Hub') {     
             steps {
                 withDockerRegistry([ credentialsId: "docker", url: "https://hub.docker.com/" ]) {
-                sh  'docker push nagapoornima/samplewebapp:latest'
-                sh  'docker push nagapoornima/samplewebapp:$BUILD_NUMBER' 
+                sh  'docker push nagapoornima/sample_login_app:latest'
+                //sh  'docker push nagapoornima/sample_login_app:tagname:$BUILD_NUMBER' 
         }
                   
           }
