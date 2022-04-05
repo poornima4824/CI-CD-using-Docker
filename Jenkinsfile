@@ -54,5 +54,11 @@ pipeline {
              version: '1.0.0'
          }
        }
+       stage('Docker Build and Tag') {
+           steps {
+              
+                sh 'docker build -t sampleloginapp:latest .' 
+           }
+       }
  }
 }
