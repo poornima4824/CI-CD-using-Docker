@@ -1,9 +1,7 @@
 pipeline {
-  environment {
-         registry = "https://hub.docker.com/sample_login_app"
-         registryCredential = 'docker'
-         dockerImage = ''
-        }
+  environment {     
+    DOCKERHUB_CREDENTIALS= credentials('dockerhubcredentials')     
+  }    
     agent any
 	
 	  tools
@@ -59,24 +57,23 @@ pipeline {
              version: '1.0.0'
          }
        }
-        stage('Docker Build and Tag') {
-           steps {
-              
-                sh 'docker build -t nagapoornima/sample_login_app .' 
-               // sh 'docker tag sample_login_app nagapoornima/sample_login_app:V1'
-              
-              
-          }
-        }
-     
-        stage('Publish image to Docker Hub') {     
-            steps {
-                withDockerRegistry([ credentialsId: "docker", url: "https://hub.docker.com/" ]) {
-                sh  'docker push nagapoornima/sample_login_app:latest'
-                //sh  'docker push nagapoornima/sample_login_app:V1:$BUILD_NUMBER' 
-        }
-                  
-          }
-        }
+        stage('Build Docker Image') {         
+      steps{                
+	         sh 'sudo docker build -t nagapoornima/sample_login_app:$BUILD_NUMBER .'           
+           echo 'Build Image Completed'                
+      }           
+    }
+    stage('Login to Docker Hub') {         
+      steps{                            
+	          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                 
+	          echo 'Login Completed'                
+      }           
+    }               
+    stage('Push Image to Docker Hub') {         
+      steps{                            
+	        sh 'sudo docker push nagapoornima/sample_login_app:$BUILD_NUMBER'                 
+          echo 'Push Image Completed'       
+      }           
+    }      
  }
 }
