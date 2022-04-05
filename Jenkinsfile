@@ -67,8 +67,8 @@ pipeline {
          stage('Docker Build and Tag') {
            steps {
               
-                sh 'docker build -t sample_login_app:latest .' 
-                sh 'docker tag sample_login_app nagapoornima/sample_login_app:latest'
+                sh 'docker build -t sample_login:latest .' 
+                sh 'docker tag sample_login_app nagapoornima/sample_login:latest'
                 //sh 'docker tag samplewebapp nikhilnidhi/samplewebapp:$BUILD_NUMBER'
                
           }
@@ -78,7 +78,7 @@ pipeline {
           
             steps {
         withDockerRegistry([ credentialsId: "docker", url: "https://hub.docker.com/" ]) {
-          sh  'docker push nagapoornima/sample_login_app:latest'
+          sh  'docker push nagapoornima/sample_login:latest'
         // sh  'docker push nikhilnidhi/samplewebapp:$BUILD_NUMBER' 
         }
                   
