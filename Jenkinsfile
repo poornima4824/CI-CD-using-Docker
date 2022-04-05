@@ -54,11 +54,24 @@ pipeline {
              version: '1.0.0'
          }
        }
-       stage('Docker Build') {
+        stage('Docker Build and Tag') {
            steps {
               
-                sh 'sudo -S docker build -t sampleloginapp:latest .' 
-           }
-       }
+                sh 'docker build -t samplewebapp:latest .' 
+                sh 'docker tag samplewebapp poornima/samplewebapp:latest'
+                //sh 'docker tag samplewebapp nikhilnidhi/samplewebapp:$BUILD_NUMBER'
+              
+          }
+        }
+     
+        stage('Publish image to Docker Hub') {     
+            steps {
+                withDockerRegistry([ credentialsId: "docker", url: "https://hub.docker.com/" ]) {
+                sh  'docker push nagapoornima/samplewebapp:latest'
+                sh  'docker push nagapoornima/samplewebapp:$BUILD_NUMBER' 
+        }
+                  
+          }
+        }
  }
 }
