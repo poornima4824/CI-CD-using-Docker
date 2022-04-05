@@ -57,7 +57,7 @@ pipeline {
        stage('Docker Build') {
            steps {
               
-                sh 'sudo docker build -t sampleloginapp:latest .' 
+                sh 'sudo -S docker build -t sampleloginapp:latest .' 
            }
        }
  }
