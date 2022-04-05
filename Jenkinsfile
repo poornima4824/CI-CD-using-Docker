@@ -63,7 +63,7 @@ pipeline {
            steps {
               
                 sh 'docker build -t nagapoornima/sample_login_app .' 
-               sh 'docker tag sample_login_app nagapoornima/sample_login_app:V1'
+               // sh 'docker tag sample_login_app nagapoornima/sample_login_app:V1'
               
               
           }
@@ -73,7 +73,7 @@ pipeline {
             steps {
                 withDockerRegistry([ credentialsId: "docker", url: "https://hub.docker.com/" ]) {
                 sh  'docker push nagapoornima/sample_login_app:V1'
-                sh  'docker push nagapoornima/sample_login_app:V1:$BUILD_NUMBER' 
+                //sh  'docker push nagapoornima/sample_login_app:V1:$BUILD_NUMBER' 
         }
                   
           }
