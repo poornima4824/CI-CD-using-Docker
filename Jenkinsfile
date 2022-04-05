@@ -63,7 +63,7 @@ pipeline {
            steps {
               
                 sh 'docker build -t nagapoornima/sample_login_app .' 
-               sh 'docker tag loginapp nagapoornima/sample_login_app:V1'
+               sh 'docker tag sample_login_app nagapoornima/sample_login_app:V1'
               
               
           }
