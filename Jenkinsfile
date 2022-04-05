@@ -59,7 +59,7 @@ pipeline {
        }
         stage('Build Docker Image') {         
       steps{                
-	         sh 'sudo docker build -t nagapoornima/sample_login_app:$BUILD_NUMBER .'           
+	         sh 'sudo -s docker build -t nagapoornima/sample_login_app:$BUILD_NUMBER .'           
            echo 'Build Image Completed'                
       }           
     }
