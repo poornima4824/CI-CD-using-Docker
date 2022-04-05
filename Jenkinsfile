@@ -21,12 +21,10 @@ pipeline {
 	 }
       stage('build && SonarQube analysis') {
           steps {
-              withSonarQubeEnv('sonar') {
-                  // Optionally use a Maven environment you've configured already
-                      sh 'mvn clean package sonar:sonar'
-                    
-                }
-            }
+               withSonarQubeEnv('SonarQube') {
+              sh 'mvn -Psonar -Dsonar.sourceEncoding=UTF-8 org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar'
+      }
+ }
         }
  }
 }
