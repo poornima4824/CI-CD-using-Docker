@@ -19,14 +19,11 @@ pipeline {
                 sh 'mvn package'             
           }
 	 }
-      stage('Sonarqube'){
-        steps {
-          withSonarQubeEnv('sonar')
-          {
-            sh "mvn sonar:sonar"
-          }
-        }
-      }
+      stage('SonarQube analysis') {
+    withSonarQubeEnv(credentialsId: 'f4248a8d33a0ef3ec6470c28be695ced18f8fab6', installationName: 'SonarqubeScanner') { 
+      sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+    }
+  }
          stage("Quality gate check"){
            steps {
              timeout(time: 1, unit: 'HOURS')
