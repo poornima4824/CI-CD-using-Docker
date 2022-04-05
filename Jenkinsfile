@@ -50,7 +50,7 @@ pipeline {
              nexusUrl: '52.55.151.18:8081', 
              nexusVersion: 'nexus3', 
              protocol: 'http', 
-             repository: 'http://52.55.151.18:8081/repository/CI-CD-app/', 
+             repository: 'CI-CD-app', 
              version: '1.0.0'
          }
        }
