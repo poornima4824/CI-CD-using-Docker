@@ -64,37 +64,58 @@ pipeline {
              version: '1.0.0'
          }
        }
-        stage('Login to AWS ECR')
-     {
-         steps
-         {
-             script
-             {
-                //sh "/usr/local/bin/aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-                 sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 440883647063.dkr.ecr.us-west-2.amazonaws.com"
-             }
-         }
-     }
-      stage('Building Docker Image')
-      {
-          steps
-          {
-              script
-              {
-               sh "docker build . -t ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
-              }
+         stage('Docker Build and Tag') {
+           steps {
+              
+                sh 'docker build -t sample_login_app:latest .' 
+                sh 'docker tag sample_login_app nagapoornima/sample_login_app:latest'
+                //sh 'docker tag samplewebapp nikhilnidhi/samplewebapp:$BUILD_NUMBER'
+               
           }
-      }
-      stage('Pushing Docker image into ECR')
-      {
-          steps
-          {
-             script
-             {
-                 sh "docker push ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
-             }
+        }
+     
+  stage('Publish image to Docker Hub') {
+          
+            steps {
+        withDockerRegistry([ credentialsId: "docker", url: "https://hub.docker.com/" ]) {
+          sh  'docker push nagapoornima/sample_login_app:latest'
+        // sh  'docker push nikhilnidhi/samplewebapp:$BUILD_NUMBER' 
+        }
+                  
           }
+        }
+     
+   //      stage('Login to AWS ECR')
+   //   {
+   //       steps
+   //       {
+   //           script
+   //           {
+   //              //sh "/usr/local/bin/aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+   //               sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 440883647063.dkr.ecr.us-west-2.amazonaws.com"
+   //           }
+   //       }
+   //   }
+   //    stage('Building Docker Image')
+   //    {
+   //        steps
+   //        {
+   //            script
+   //            {
+   //             sh "docker build . -t ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
+   //            }
+   //        }
+   //    }
+   //    stage('Pushing Docker image into ECR')
+   //    {
+   //        steps
+   //        {
+   //           script
+   //           {
+   //               sh "docker push ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
+   //           }
+   //        }
 
-     }
+   //   }
   }
 }
