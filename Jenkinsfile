@@ -28,22 +28,22 @@ pipeline {
           }
 	 }
        
-    //     stage('Execute Sonarqube Report') {
-    //      steps {
-    //         withSonarQubeEnv('Sonar')
-    //         {
-    //           sh "mvn sonar:sonar"
-    //         }
-    //        }
-    //    }
-    //    stage('Quality Gate Check') {
-    //      steps {
-    //         timeout(time: 1, unit: 'HOURS') 
-    //         {    
-    //            waitForQualityGate abortPipeline: true
-    //    }
-    //  }
-    //   }
+        stage('Execute Sonarqube Report') {
+          steps {
+             withSonarQubeEnv('Sonar')
+             {
+               sh "mvn sonar:sonar"
+             }
+            }
+        }
+        stage('Quality Gate Check') {
+          steps {
+             timeout(time: 1, unit: 'HOURS') 
+             {    
+                waitForQualityGate abortPipeline: true
+        }
+      }
+       }
 
        stage('Nexus artifact upload') {
          steps {
