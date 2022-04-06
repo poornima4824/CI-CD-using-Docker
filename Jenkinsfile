@@ -65,25 +65,22 @@ pipeline {
          }
        }
          stage('Docker Build and Tag') {
-           steps {
-              
-                sh 'docker build -t sample_login:latest .' 
-                sh 'docker tag sample_login_app nagapoornima/sample_login:latest'
-                //sh 'docker tag samplewebapp nikhilnidhi/samplewebapp:$BUILD_NUMBER'
-               
-          }
-        }
-     
-  stage('Publish image to Docker Hub') {
-          
-            steps {
-        withDockerRegistry([ credentialsId: "docker", url: "https://hub.docker.com/" ]) {
-          sh  'docker push nagapoornima/sample_login:latest'
-        // sh  'docker push nikhilnidhi/samplewebapp:$BUILD_NUMBER' 
-        }
-                  
-          }
-        }
+              steps {
+                  sh 'docker build -t sample_login_app:latest .'
+                  sh 'docker tag  sample_login_app nagapoornima/sample_login_app:latest'
+                    }
+              }
+         stage('Login') {
+              steps {
+            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
+              }
+          stage('Push') {
+                 steps {
+                  sh 'docker push  nagapoornima/sample_login_app:latest'
+
+                 }
+           }
      
    //      stage('Login to AWS ECR')
    //   {
