@@ -57,7 +57,7 @@ pipeline {
           ], 
              credentialsId: 'nexus', 
              groupId: 'com.devops4solutions', 
-             nexusUrl: '52.55.151.18:8081', 
+             nexusUrl: '44.203.5.248:8081', 
              nexusVersion: 'nexus3', 
              protocol: 'http', 
              repository: 'CI-CD-app', 
