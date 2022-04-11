@@ -119,5 +119,12 @@ pipeline {
            }
 
      }
+     stage('Run the Docker Image') {
+     steps{
+         script {
+                sh "docker run -d -p 9090:8080 --rm --name myLoginPage ${REPOSITORY_URI}:sample-login-app"
+            }
+      }
+    } 
   }
 }
