@@ -1,6 +1,7 @@
 pipeline {
    environment
- {
+ {    
+     AWS_CREDENTIALS= credentials('aws-credentials')
      AWS_ACCOUNT_ID="440883647063"             
      AWS_DEFAULT_REGION="us-east-1" 
      IMAGE_REPO_NAME="sample_login_app"
