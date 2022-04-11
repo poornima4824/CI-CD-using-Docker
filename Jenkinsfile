@@ -99,7 +99,7 @@ pipeline {
            {
                script
                {
-                sh "docker build . -t ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
+                sh "docker build . -t ${REPOSITORY_URI}:sample_login_app"
                }
            }
        }
@@ -109,7 +109,7 @@ pipeline {
            {
              script
               {
-                  sh "docker push ${REPOSITORY_URI}:mavenwebapp-${COMMIT}"
+                  sh "docker push ${REPOSITORY_URI}:sample_login_app"
               }
            }
 
