@@ -88,8 +88,8 @@ pipeline {
           {
               script
               {
-                 sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-                 // sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 440883647063.dkr.ecr.us-west-2.amazonaws.com"
+                 //sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                  sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 440883647063.dkr.ecr.us-east-1.amazonaws.com"
               }
           }
       }
@@ -99,7 +99,7 @@ pipeline {
            {
                script
                {
-                sh "docker build . -t ${REPOSITORY_URI}:sample_login_app"
+                sh "docker build . -t ${REPOSITORY_URI}:LoginWebApp"
                }
            }
        }
@@ -109,7 +109,7 @@ pipeline {
            {
              script
               {
-                  sh "docker push ${REPOSITORY_URI}:sample_login_app"
+                  sh "docker push ${REPOSITORY_URI}:LoginWebApp"
               }
            }
 
