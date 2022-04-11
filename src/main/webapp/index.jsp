@@ -3,9 +3,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Example</title>
+        <title>Authentication Page</title>
     </head>
-    <body bgcolor="Red">
+    <body bgcolor="silver">
         <form method="post" action="login.jsp">
             <center>
             <table border="0" width="30%" cellpadding="3">
@@ -16,8 +16,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Name</td>
-                        <td><input type="text" name="userName" value="" /></td>
+                        <td>Username</td>
+                        <td><input type="text" name="Name" value="" /></td>
                     </tr>
                     <tr>
                         <td>Password</td>
