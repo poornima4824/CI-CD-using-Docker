@@ -17,7 +17,7 @@ pipeline {
       stage('checkout') {
            steps {
              
-                git branch: 'master', url: 'https://github.com/devops4solutions/CI-CD-using-Docker.git'
+                git branch: 'master', url: 'https://github.com/poornima4824/CI-CD-using-Docker.git'
              
           }
         }
@@ -82,37 +82,37 @@ pipeline {
         //          }
         //    }
      
-    //    stage('Login to AWS ECR')
-    //   {
-    //       steps
-    //       {
-    //           script
-    //           {
-    //              //sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-    //               sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 440883647063.dkr.ecr.us-east-1.amazonaws.com"
-    //           }
-    //       }
-    //   }
-    //    stage('Building Docker Image')
-    //    {
-    //        steps
-    //        {
-    //            script
-    //            {
-    //             sh "docker build . -t ${REPOSITORY_URI}:LoginWebApp"
-    //            }
-    //        }
-    //    }
-    //    stage('Pushing Docker image into ECR')
-    //    {
-    //        steps
-    //        {
-    //          script
-    //           {
-    //               sh "docker push ${REPOSITORY_URI}:LoginWebApp"
-    //           }
-    //        }
+       stage('Login to AWS ECR')
+      {
+          steps
+          {
+              script
+              {
+                 //sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                  sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 440883647063.dkr.ecr.us-east-1.amazonaws.com"
+              }
+          }
+      }
+       stage('Building Docker Image')
+       {
+           steps
+           {
+               script
+               {
+                sh "docker build . -t ${REPOSITORY_URI}:LoginWebApp"
+               }
+           }
+       }
+       stage('Pushing Docker image into ECR')
+       {
+           steps
+           {
+             script
+              {
+                  sh "docker push ${REPOSITORY_URI}:LoginWebApp"
+              }
+           }
 
-    //  }
+     }
   }
 }
