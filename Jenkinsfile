@@ -112,8 +112,8 @@ pipeline {
            {
              script
               {
-                sh "docker push 440883647063.dkr.ecr.us-east-1.amazonaws.com/sample-login-app:latest"
-                 // sh "docker push ${REPOSITORY_URI}:LoginWebApp"
+                //sh "docker push 440883647063.dkr.ecr.us-east-1.amazonaws.com/sample-login-app:latest"
+                  sh "docker push ${REPOSITORY_URI}:sample-login-app"
               }
            }
 
