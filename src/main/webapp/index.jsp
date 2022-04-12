@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Authentication</title>
     </head>
-    <body bgcolor="red">
+    <body bgcolor="silver">
         <form method="post" action="login.jsp">
             <center>
             <table border="0" width="30%" cellpadding="3">
@@ -16,7 +16,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Username</td>
+                        <td>Name</td>
                         <td><input type="text" name="Name" value="" /></td>
                     </tr>
                     <tr>
