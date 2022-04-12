@@ -122,14 +122,14 @@ pipeline {
      //stop the previous containers if we use the same container name
      stage('stop previous containers') {
          steps {
-            sh 'docker ps -f name=myLoginPage -q | xargs --no-run-if-empty docker container stop'
-            sh 'docker container ls -a -fname=myLoginPage -q | xargs -r docker container rm'
+            sh 'docker ps -f name=myContainer -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -fname=myContainer -q | xargs -r docker container rm'
          }
        }
      stage('Run the Docker Image') {
      steps{
          script {
-                sh "docker run -d -p 9090:8080 --rm --name myLoginPage ${REPOSITORY_URI}:latest"
+                sh "docker run -d -p 9090:8080 --rm --name myContainer ${REPOSITORY_URI}:latest"
             }
       }
     } 
