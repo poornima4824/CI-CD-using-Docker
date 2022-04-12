@@ -129,7 +129,7 @@ pipeline {
      stage('Run the Docker Image') {
      steps{
          script {
-                sh "docker run -d -p 9091:8080 --rm --name myContainerLoginApp ${REPOSITORY_URI}:latest"
+                sh "docker run -d -p 9090:8080 --rm --name myContainerLoginApp ${REPOSITORY_URI}:latest"
             }
       }
     } 
