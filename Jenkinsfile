@@ -48,21 +48,26 @@ pipeline {
 
        stage('Nexus artifact upload') {
          steps {
-         nexusArtifactUploader artifacts: [
-           [
-             artifactId: 'LoginWebApp', 
-             classifier: '', 
-             file: 'target/LoginWebApp-1.war', 
-             type: 'war'
-             ]
-          ], 
+           script
+            {
+                 def readPom = readMavenPom file: 'pom.xml'
+                 def nexusrepo = readPom.version.endsWith("SNAPSHOT") ? "maven-snapshots" : "maven-releases"
+                 nexusArtifactUploader artifacts: 
+                 [
+                     [
+                         artifactId: "${readPom.artifactId}",
+                         classifier: '', 
+                         file: "target/${readPom.artifactId}-${readPom.version}.war", 
+                         type: 'war'
+                     ]
+                ],
              credentialsId: 'nexus', 
-             groupId: 'com.devops4solutions', 
-             nexusUrl: '44.203.5.248:8081', 
+             groupId: "${readPom.groupId}", 
+             nexusUrl: '44.203.198.172:8081', 
              nexusVersion: 'nexus3', 
              protocol: 'http', 
-             repository: 'CI-CD-app', 
-             version: '1.0.0'
+             repository: "${nexusrepo}", 
+             version: "${readPom.version}"
          }
        }
         //  stage('Docker Build and Tag') {
