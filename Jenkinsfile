@@ -70,6 +70,7 @@ pipeline {
              version: "${readPom.version}"
          }
        }
+       }
         //  stage('Docker Build and Tag') {
         //       steps {
         //           sh 'docker build -t sample_login_app:latest .'
