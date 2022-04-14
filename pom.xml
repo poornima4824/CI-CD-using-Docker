@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.devops4solutions</groupId>
-  <artifactId>LoginApp</artifactId>
+  <artifactId>MavenApp</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
-  <name>LoginApp</name>
+  <name>MavenApp</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -116,7 +116,7 @@
 				<configuration>
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 					<webApp>
-						<contextPath>/LoginApp</contextPath>
+						<contextPath>/MavenApp</contextPath>
 					</webApp>
 				</configuration>
 			</plugin>
@@ -129,7 +129,7 @@
 					<downloadSources>true</downloadSources>
 					<downloadJavadocs>true</downloadJavadocs>
 					<wtpversion>2.0</wtpversion>
-					<wtpContextName>LoginApp</wtpContextName>
+					<wtpContextName>MavenApp</wtpContextName>
 				</configuration>
 			</plugin>
 			
