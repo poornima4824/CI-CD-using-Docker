@@ -4,6 +4,6 @@
 
 FROM tomcat:latest
 COPY target/*.war /usr/local/tomcat/webapps/WebApp.war/
-EXPOSE 3000
+
 
 CMD ["catalina.sh", "run"]
