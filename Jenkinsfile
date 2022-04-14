@@ -46,42 +46,49 @@ pipeline {
       // }
       //  }
 
-       stage('Nexus artifact upload') {
-         steps {
-         nexusArtifactUploader artifacts: [
-           [
-             artifactId: 'LoginWebApp', 
-             classifier: '', 
-             file: 'target/LoginWebApp-0.0.1-SNAPSHOT.war	', 
-             type: 'war'
-             ]
-          ], 
-             credentialsId: 'nexus', 
-             groupId: 'com.devops4solutions', 
-             nexusUrl: '44.203.198.172:8081', 
-             nexusVersion: 'nexus3', 
-             protocol: 'http', 
-             repository: 'CI-CD-app', 
-             version: '1.0.0'
-         }
-       }
-        //  stage('Docker Build and Tag') {
-        //       steps {
-        //           sh 'docker build -t sample_login_app:latest .'
-        //           sh 'docker tag  sample_login_app nagapoornima/sample_login_app:latest'
-        //             }
-        //       }
-        //  stage('Login') {
-        //       steps {
-        //     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-        //         }
-        //       }
-        //   stage('Push') {
-        //          steps {
-        //           sh 'docker push  nagapoornima/sample_login_app:latest'
+        stage("Publish to Nexus Repository Manager") {
+            steps {
+                 script
+            {
+                 def readPom = readMavenPom file: 'pom.xml'
+                 def nexusrepo = readPom.version.endsWith("SNAPSHOT") ? "maven-snapshots" : "maven-releases"
+                 nexusArtifactUploader artifacts: 
+                 [
+                     [
+                         artifactId: "${readPom.artifactId}",
+                         classifier: '', 
+                         file: "target/${readPom.artifactId}-${readPom.version}.war", 
+                         type: 'war'
+                     ]
+                ], 
+                         credentialsId: 'nexus', 
+                         groupId: "${readPom.groupId}", 
+                         nexusUrl: '54.211.138.232:8081', 
+                         nexusVersion: 'nexus3', 
+                         protocol: 'http', 
+                         repository: "${nexusrepo}", 
+                         version: "${readPom.version}"
 
-        //          }
-        //    }
+            }
+         }
+     }
+         stage('Docker Build and Tag') {
+              steps {
+                  sh 'docker build -t sample_login_app:latest .'
+                  sh 'docker tag  sample_login_app nagapoornima/sample_login_app:latest'
+                    }
+              }
+         stage('Login') {
+              steps {
+            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
+              }
+          stage('Push') {
+                 steps {
+                  sh 'docker push  nagapoornima/sample_login_app:latest'
+
+                 }
+           }
      
        stage('Login to AWS ECR')
       {
@@ -91,7 +98,7 @@ pipeline {
               {
                  sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 440883647063.dkr.ecr.us-east-1.amazonaws.com"
                  //sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-                  sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 440883647063.dkr.ecr.us-east-1.amazonaws.com"
+                 // sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 440883647063.dkr.ecr.us-east-1.amazonaws.com"
               }
           }
       }
@@ -122,14 +129,14 @@ pipeline {
      //stop the previous containers if we use the same container name
     stage('stop previous containers') {
          steps {
-           sh 'docker ps -f name=myContainerLoginApp -q | xargs --no-run-if-empty docker container stop'
-            sh 'docker container ls -a -fname=myContainerLoginApp -q | xargs -r docker container rm'
+           sh 'docker ps -f name=samplewebapp -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -fname=samplewebapp -q | xargs -r docker container rm'
          }
        }
      stage('Run the Docker Image') {
         steps{
            script {
-                sh "docker run -d -p 9090:8080 --rm --name myContainerLoginApp ${REPOSITORY_URI}:latest"
+                sh "docker run -d -p 9090:8080 --rm --name samplewebapp ${REPOSITORY_URI}:latest"
             }
       }
     } 
