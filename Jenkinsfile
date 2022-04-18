@@ -63,7 +63,7 @@ pipeline {
                 ], 
                          credentialsId: 'nexus', 
                          groupId: "${readPom.groupId}", 
-                         nexusUrl: '54.211.138.232:8081', 
+                         nexusUrl: '3.83.137.80:8081', 
                          nexusVersion: 'nexus3', 
                          protocol: 'http', 
                          repository: "${nexusrepo}", 
@@ -72,23 +72,23 @@ pipeline {
             }
          }
      }
-         stage('Docker Build and Tag') {
-              steps {
-                  sh 'docker build -t sample_login_app:latest .'
-                  sh 'docker tag  sample_login_app nagapoornima/sample_login_app:latest'
-                    }
-              }
-         stage('Login') {
-              steps {
-            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                }
-              }
-          stage('Push') {
-                 steps {
-                  sh 'docker push  nagapoornima/sample_login_app:latest'
+        //  stage('Docker Build and Tag') {
+        //       steps {
+        //           sh 'docker build -t sample_login_app:latest .'
+        //           sh 'docker tag  sample_login_app nagapoornima/sample_login_app:latest'
+        //             }
+        //       }
+        //  stage('Login') {
+        //       steps {
+        //     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        //         }
+        //       }
+        //   stage('Push') {
+        //          steps {
+        //           sh 'docker push  nagapoornima/sample_login_app:latest'
 
-                 }
-           }
+        //          }
+        //    }
      
        stage('Login to AWS ECR')
       {
